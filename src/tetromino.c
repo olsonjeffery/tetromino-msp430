@@ -3,6 +3,7 @@
 // See http://creativecommons.org/licenses/by-nc-sa/4.0/ for more information
 //
 // tetris.c - tetris game logic/state impl
+#include "tetromino.h"
 
 // This is the tetris game field.. each entry is a "column"
 // with "rightward" bits being more "downward" from bits to their left.

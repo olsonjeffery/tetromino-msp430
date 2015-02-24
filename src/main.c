@@ -5,6 +5,7 @@
 // main.c - application entry point
 
 #include <msp430.h>
+#include "tetromino.h"
 
 int main(void) {
    unsigned int count;
