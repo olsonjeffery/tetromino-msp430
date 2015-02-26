@@ -9,4 +9,11 @@
 // This is the tetris game field.. each entry is a "column"
 // with "rightward" bits being more "downward" from bits to their left.
 // ...way longer than it needs to be.
-static uint32_t field[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static uint32_t field[FIELD_WIDTH] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+void reset_field() {
+  uint16_t i = 0;
+  for (i=0;i < FIELD_WIDTH;i++) {
+    field[i] = 0;
+  }
+}
