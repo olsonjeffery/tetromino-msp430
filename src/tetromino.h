@@ -39,9 +39,6 @@
 #define ROW19 0x00080000
 #define FIELD_WIDTH 10
 
-// clear the game field to its original, blank state
-void reset_field();
-
 typedef enum TETROMINO_PIECE {
   PIECE_T,
   PIECE_O,
@@ -66,3 +63,6 @@ typedef struct TETROMINO_GAME {
   uint8_t  bit3_col;
   uint32_t bit3_row;
 } TETROMINO_GAME;
+
+// clear the game field to its original, blank state
+void reset_game(TETROMINO_GAME* game);

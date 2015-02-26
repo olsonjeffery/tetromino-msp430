@@ -14,6 +14,9 @@ int main(void) {
    P4OUT = 0; //Configure P4 to output on P4.7
    P4DIR |= 0x80;
 
+   TETROMINO_GAME game;
+   reset_game(&game);
+
    for(;;){
       P4OUT ^= 0x80; //Toggle P4.7 using exclusive-OR
       for(count=0; count<20000; count++){ /* Insert some delay */ }
