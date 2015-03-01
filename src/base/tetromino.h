@@ -39,6 +39,7 @@
 #define ROW19 0x00080000
 #define FIELD_WIDTH 10
 
+// different types of pieces
 typedef enum TETROMINO_PIECE {
   PIECE_T,
   PIECE_O,
@@ -49,20 +50,40 @@ typedef enum TETROMINO_PIECE {
   PIECE_Z
 } TETROMINO_PIECE;
 
-// get the complete state of a row
+// the complete game state
 typedef struct TETROMINO_GAME {
   uint32_t field[FIELD_WIDTH];
   uint32_t score;
-  TETROMINO_PIECE current_piece;
-  uint8_t  bit0_col;
   uint32_t bit0_row;
-  uint8_t  bit1_col;
   uint32_t bit1_row;
-  uint8_t  bit2_col;
   uint32_t bit2_row;
-  uint8_t  bit3_col;
   uint32_t bit3_row;
+  uint8_t  bit0_col;
+  uint8_t  bit1_col;
+  uint8_t  bit2_col;
+  uint8_t  bit3_col;
+  TETROMINO_PIECE current_piece;
 } TETROMINO_GAME;
 
 // clear the game field to its original, blank state
 void reset_game(TETROMINO_GAME* game);
+
+// UNIMPLEMENTED
+
+// place a new piece on the gameboard, with the "pivot" at the provided location..
+void place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t row, uint32_t col);
+
+// try to move a piece left/right
+// returns 0 for success, non-zero for failure
+int try_move_piece_left(TETROMINO_GAME* game);
+int try_move_piece_right(TETROMINO_GAME* game);
+
+// rotate current piece clockwise
+void rotate_piece_clockwise(TETROMINO_GAME* game);
+
+// do a "hard drop" (make piece fall down until it "lands")
+void do_hard_drop(TETROMINO_GAME* game);
+
+// let "gravity have its effect", pulling the current tetromino down 1 space
+// returns 0 if the piece is still free-falling, non-zero if the piece has landed
+int do_soft_drop(TETROMINO_GAME* game);

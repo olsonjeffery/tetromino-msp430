@@ -55,13 +55,8 @@ TAGS.vim
 version.ml
 version.texi
 config.mk
-/rt/
-/rustllvm/
-/test/
 /build/
-/inst/
-/mingw-build/
-src/.DS_Store
+.DS_Store
 /tmp/
 /stage0/
 /dl/
