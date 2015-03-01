@@ -11,7 +11,7 @@ void reset_game(TETROMINO_GAME* game) {
   for (i=0;i < FIELD_WIDTH;i++) {
     game->field[i] = 0;
     game->score = 0;
-    game->current_piece = PIECE_L;
+    game->current_piece = PIECE_NONE;
     game->bit0_col = COL0;
     game->bit0_row = ROW00;
     game->bit1_col = COL0;
@@ -21,4 +21,8 @@ void reset_game(TETROMINO_GAME* game) {
     game->bit3_col = COL0;
     game->bit3_row = ROW00;
   }
+}
+
+void place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t row, uint32_t col) {
+  game->current_piece = piece;
 }

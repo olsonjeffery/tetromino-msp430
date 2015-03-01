@@ -41,6 +41,7 @@
 
 // different types of pieces
 typedef enum TETROMINO_PIECE {
+  PIECE_NONE,
   PIECE_T,
   PIECE_O,
   PIECE_I,
