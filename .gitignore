@@ -58,11 +58,6 @@ config.mk
 /build/
 .DS_Store
 /tmp/
-/stage0/
-/dl/
-/stage1/
-/stage2/
-/stage3/
 *.bz2
 /doc/html
 /doc/latex
