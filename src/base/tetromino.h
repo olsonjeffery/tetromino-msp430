@@ -4,6 +4,7 @@
 //
 // tetromino.h - tetromino game API
 #include <stdint.h>
+#include "../api.h"
 
 // bitmasks to index into each location in the field
 // all locations are starting in the upper-left corner and moving right/down
@@ -38,6 +39,8 @@
 #define ROW18 0x00040000
 #define ROW19 0x00080000
 #define FIELD_WIDTH 10
+#define GAME_ACTIVE = 0
+#define GAME_OVER = 1
 
 // different types of pieces
 typedef enum TETROMINO_PIECE {
@@ -63,28 +66,40 @@ typedef struct TETROMINO_GAME {
   uint8_t  bit1_col;
   uint8_t  bit2_col;
   uint8_t  bit3_col;
+  // BIT0: Game-in-progress status 0 = initial state, game active 1 = game over
+  // BIT1 & BIT2: rotation: 00, 01, 10 & 11  
+  uint8_t status;
   TETROMINO_PIECE current_piece;
 } TETROMINO_GAME;
 
-// clear the game field to its original, blank state
-void reset_game(TETROMINO_GAME* game);
-
-// UNIMPLEMENTED
+// public API
 
 // place a new piece on the gameboard, with the "pivot" at the provided location..
-void place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t row, uint32_t col);
+void new_game(TETROMINO_GAME* game);
 
 // try to move a piece left/right
 // returns 0 for success, non-zero for failure
-int try_move_piece_left(TETROMINO_GAME* game);
-int try_move_piece_right(TETROMINO_GAME* game);
+int do_move_left(TETROMINO_GAME* game);
+int do_move_right(TETROMINO_GAME* game);
 
 // rotate current piece clockwise
-void rotate_piece_clockwise(TETROMINO_GAME* game);
+void do_rotate_clockwise(TETROMINO_GAME* game);
 
 // do a "hard drop" (make piece fall down until it "lands")
 void do_hard_drop(TETROMINO_GAME* game);
 
 // let "gravity have its effect", pulling the current tetromino down 1 space
 // returns 0 if the piece is still free-falling, non-zero if the piece has landed
-int do_soft_drop(TETROMINO_GAME* game);
+void do_soft_drop(TETROMINO_GAME* game);
+
+// "internal" API
+
+// return a random TETROMINO_PIECE
+TETROMINO_PIECE priv_get_random_piece();
+
+// indicates whether moving the current piece to the requested location is possible
+uint8_t priv_piece_can_move(TETROMINO_GAME* game, uint8_t col, uint32_t row);
+
+// relocate piece "locus" to a given location, applying each unit of the tetromino
+// based on its current rotation. does nothing if its an invalid placement
+void priv_place_piece(TETROMINO_GAME* game, uint8_t col, uint32_t row);

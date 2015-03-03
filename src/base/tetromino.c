@@ -3,7 +3,6 @@
 // See http://creativecommons.org/licenses/by-nc-sa/4.0/ for more information
 //
 // tetromino.c - tetromino game logic/state impl
-#include <stdint.h>
 #include "tetromino.h"
 
 void reset_game(TETROMINO_GAME* game) {
@@ -11,6 +10,7 @@ void reset_game(TETROMINO_GAME* game) {
   for (i=0;i < FIELD_WIDTH;i++) {
     game->field[i] = 0;
     game->score = 0;
+    game->status = 0;
     game->current_piece = PIECE_NONE;
     game->bit0_col = COL0;
     game->bit0_row = ROW00;
@@ -23,6 +23,14 @@ void reset_game(TETROMINO_GAME* game) {
   }
 }
 
-void place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t row, uint32_t col) {
-  game->current_piece = piece;
+void seed_rng() {
+}
+
+#define BAD_ADDR 0
+TETROMINO_PIECE get_random_piece() {
+}
+
+void new_game(TETROMINO_GAME* game) {
+  reset_game(game);
+  //game->current_piece = piece;
 }

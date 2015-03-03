@@ -12,17 +12,8 @@
 START_TEST(test_tetromino_reset_game)
 {
   TETROMINO_GAME game;
-  reset_game(&game);
+  new_game(&game);
   ck_assert_int_eq(PIECE_NONE, game.current_piece);
-}
-END_TEST
-
-START_TEST(test_tetromino_place_piece)
-{
-  TETROMINO_GAME game;
-  reset_game(&game);
-  place_piece(&game, PIECE_T, ROW01, COL4);
-  ck_assert_int_eq(PIECE_T, game.current_piece);
 }
 END_TEST
 
@@ -37,7 +28,6 @@ Suite * tetromino_suite(void)
     tc_core = tcase_create("Core");
 
     tcase_add_test(tc_core, test_tetromino_reset_game);
-    tcase_add_test(tc_core, test_tetromino_place_piece);
     suite_add_tcase(s, tc_core);
 
     return s;
