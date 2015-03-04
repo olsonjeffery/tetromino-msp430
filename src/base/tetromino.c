@@ -23,14 +23,84 @@ void reset_game(TETROMINO_GAME* game) {
   }
 }
 
-void seed_rng() {
-}
-
-#define BAD_ADDR 0
-TETROMINO_PIECE get_random_piece() {
+TETROMINO_PIECE priv_get_random_piece() {
+  return PIECE_NONE;
 }
 
 void new_game(TETROMINO_GAME* game) {
   reset_game(game);
-  //game->current_piece = piece;
+}
+
+void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
+  //
+}
+
+uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
+  //
+  return FALSE;
+}
+
+TETROMINO_PLACEMENT priv_get_placement(TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
+  TETROMINO_PLACEMENT placement;
+  if (piece == PIECE_T) {
+    if (rot == ROT_0) {
+      // .1.
+      // 203
+      // ...
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col;
+      placement.bit1_row = row >> 1;
+      placement.bit2_col = col - 1;
+      placement.bit2_row = row;
+      placement.bit3_col = col + 1;
+      placement.bit3_row = row;
+    }
+    else if (rot == ROT_1) {
+      //  .2.
+      //  .01
+      //  .3.
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col + 1;
+      placement.bit1_row = row;
+      placement.bit2_col = col;
+      placement.bit2_row = row >> 1;
+      placement.bit3_col = col;
+      placement.bit3_row = row << 1;
+    }
+    else if (rot == ROT_2) {
+      // ...
+      // 302
+      // .1.
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col;
+      placement.bit1_row = row << 1;
+      placement.bit2_col = col + 1;
+      placement.bit2_row = row;
+      placement.bit3_col = col - 1;
+      placement.bit3_row = row;
+    }
+    else if (rot == ROT_3) {
+      // .3.
+      // 10.
+      // .2.
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col - 1;
+      placement.bit1_row = row;
+      placement.bit2_col = col;
+      placement.bit2_row = row << 1;
+      placement.bit3_col = col;
+      placement.bit3_row = row >> 1;
+    }
+    else {
+      // failure
+    }
+  }
+  else {
+    // failure
+  }
+  return placement;
 }
