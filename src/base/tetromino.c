@@ -99,7 +99,7 @@ TETROMINO_PLACEMENT priv_get_placement(TETROMINO_PIECE piece, uint8_t rot, uint8
       // failure
     }
   }
-  else if (piece == PIECE_L) {
+  else if (piece == PIECE_I) {
     if (rot == ROT_0) {
       // ....
       // 1023
