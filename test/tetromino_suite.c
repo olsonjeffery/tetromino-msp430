@@ -50,43 +50,43 @@ START_TEST(test_get_placement_piece_t)
 {
   TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_T, ROT_0, COL4, ROW01);
   ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_eq(ROW01, placement.bit0_row);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
   ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_eq(ROW00, placement.bit1_row);
+  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
   ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_eq(ROW01, placement.bit2_row);
+  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
   ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_eq(ROW01, placement.bit3_row);
+  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
 
   placement = priv_get_placement(PIECE_T, ROT_1, COL4, ROW01);
   ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_eq(ROW01, placement.bit0_row);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
   ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_eq(ROW01, placement.bit1_row);
+  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
   ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_eq(ROW00, placement.bit2_row);
+  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
   ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_eq(ROW02, placement.bit3_row);
+  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
 
   placement = priv_get_placement(PIECE_T, ROT_2, COL4, ROW01);
   ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_eq(ROW01, placement.bit0_row);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
   ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_eq(ROW02, placement.bit1_row);
+  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
   ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_eq(ROW01, placement.bit2_row);
+  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
   ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_eq(ROW01, placement.bit3_row);
+  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
 
   placement = priv_get_placement(PIECE_T, ROT_3, COL4, ROW01);
   ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_eq(ROW01, placement.bit0_row);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
   ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_eq(ROW01, placement.bit1_row);
+  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
   ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_eq(ROW02, placement.bit2_row);
+  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
   ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_eq(ROW00, placement.bit3_row);
+  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
 }
 END_TEST
 
