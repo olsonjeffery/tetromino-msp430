@@ -160,6 +160,18 @@ TETROMINO_PLACEMENT priv_get_placement(TETROMINO_PIECE piece, uint8_t rot, uint8
       // failure
     }
   }
+  else if (piece == PIECE_O) {
+    // .01.
+    // .23.
+    placement.bit0_col = col;
+    placement.bit0_row = row;
+    placement.bit1_col = col + 1;
+    placement.bit1_row = row;
+    placement.bit2_col = col;
+    placement.bit2_row = row << 1;
+    placement.bit3_col = col + 1;
+    placement.bit3_row = row << 1;
+  }
   else {
     // failure
   }

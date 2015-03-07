@@ -134,6 +134,50 @@ START_TEST(test_get_placement_piece_l)
 }
 END_TEST
 
+START_TEST(test_get_placement_piece_o)
+{
+  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_O, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement.bit0_col);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
+  ck_assert_int_eq(COL5, placement.bit1_col);
+  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
+  ck_assert_int_eq(COL4, placement.bit2_col);
+  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
+  ck_assert_int_eq(COL5, placement.bit3_col);
+  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+
+  placement = priv_get_placement(PIECE_O, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement.bit0_col);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
+  ck_assert_int_eq(COL5, placement.bit1_col);
+  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
+  ck_assert_int_eq(COL4, placement.bit2_col);
+  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
+  ck_assert_int_eq(COL5, placement.bit3_col);
+  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+
+  placement = priv_get_placement(PIECE_O, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement.bit0_col);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
+  ck_assert_int_eq(COL5, placement.bit1_col);
+  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
+  ck_assert_int_eq(COL4, placement.bit2_col);
+  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
+  ck_assert_int_eq(COL5, placement.bit3_col);
+  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+
+  placement = priv_get_placement(PIECE_O, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement.bit0_col);
+  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
+  ck_assert_int_eq(COL5, placement.bit1_col);
+  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
+  ck_assert_int_eq(COL4, placement.bit2_col);
+  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
+  ck_assert_int_eq(COL5, placement.bit3_col);
+  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+}
+END_TEST
+
 Suite * tetromino_suite(void)
 {
     Suite *s;
@@ -149,6 +193,7 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_identity_valid_placement);
     tcase_add_test(tc_core, test_get_placement_piece_t);
     tcase_add_test(tc_core, test_get_placement_piece_l);
+    tcase_add_test(tc_core, test_get_placement_piece_o);
     suite_add_tcase(s, tc_core);
 
     return s;
