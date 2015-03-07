@@ -286,6 +286,63 @@ TETROMINO_PLACEMENT priv_get_placement(TETROMINO_PIECE piece, uint8_t rot, uint8
       // failure
     }
   }
+  else if (piece == PIECE_S) {
+    if (rot == ROT_0) {
+      // .12
+      // 30.
+      // ...
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col;
+      placement.bit1_row = row >> 1;
+      placement.bit2_col = col + 1;
+      placement.bit2_row = row >> 1;
+      placement.bit3_col = col - 1;
+      placement.bit3_row = row;
+    }
+    else if (rot == ROT_1) {
+      // .3.
+      // .01
+      // ..2
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col + 1;
+      placement.bit1_row = row;
+      placement.bit2_col = col + 1;
+      placement.bit2_row = row << 1;
+      placement.bit3_col = col;
+      placement.bit3_row = row >> 1;
+    }
+    else if (rot == ROT_2) {
+      // ...
+      // .03
+      // 21.
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col;
+      placement.bit1_row = row << 1;
+      placement.bit2_col = col - 1;
+      placement.bit2_row = row << 1;
+      placement.bit3_col = col + 1;
+      placement.bit3_row = row;
+    }
+    else if (rot == ROT_3) {
+      // 2..
+      // 10.
+      // .3.
+      placement.bit0_col = col;
+      placement.bit0_row = row;
+      placement.bit1_col = col - 1;
+      placement.bit1_row = row;
+      placement.bit2_col = col - 1;
+      placement.bit2_row = row >> 1;
+      placement.bit3_col = col;
+      placement.bit3_row = row << 1;
+    }
+    else {
+      // failure
+    }
+  }
   else {
     // failure
   }
