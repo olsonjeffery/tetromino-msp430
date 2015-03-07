@@ -17,35 +17,6 @@ START_TEST(test_reset_game)
   ck_assert_int_eq(PIECE_NONE, game.current_piece);
 }
 END_TEST
-
-START_TEST(test_place_piece_valid)
-{
-  TETROMINO_GAME game;
-  new_game(&game);
-  priv_place_piece(&game, PIECE_T, ROT_0, COL4, ROW01);
-  // should result in piece being placed
-  ck_assert_int_eq(PIECE_T, game.current_piece);
-
-  ck_assert_int_eq(COL4, game.bit0_col);
-  ck_assert_int_eq(ROW01, game.bit0_row);
-  ck_assert_int_eq(COL4, game.bit1_col);
-  ck_assert_int_eq(ROW00, game.bit1_row);
-  ck_assert_int_eq(COL3, game.bit2_col);
-  ck_assert_int_eq(ROW01, game.bit2_row);
-  ck_assert_int_eq(COL5, game.bit3_col);
-  ck_assert_int_eq(ROW01, game.bit3_row);
-}
-END_TEST
-
-START_TEST(test_identity_valid_placement)
-{
-  TETROMINO_GAME game;
-  new_game(&game);
-  // should indicate its a valid placement
-  ck_assert_int_eq(TRUE, priv_placement_is_valid(&game, PIECE_T, ROT_0, COL4, ROW01));
-}
-END_TEST
-
 START_TEST(test_get_placement_piece_t)
 {
   TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_T, ROT_0, COL4, ROW01);
@@ -354,6 +325,53 @@ START_TEST(test_get_placement_piece_z)
 }
 END_TEST
 
+START_TEST(test_place_piece_valid)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  priv_place_piece(&game, PIECE_T, ROT_0, COL4, ROW01);
+  // should result in piece being placed
+  ck_assert_int_eq(PIECE_T, game.current_piece);
+
+  ck_assert_int_eq(COL4, game.bit0_col);
+  ck_assert_int_eq(ROW01, game.bit0_row);
+  ck_assert_int_eq(COL4, game.bit1_col);
+  ck_assert_int_eq(ROW00, game.bit1_row);
+  ck_assert_int_eq(COL3, game.bit2_col);
+  ck_assert_int_eq(ROW01, game.bit2_row);
+  ck_assert_int_eq(COL5, game.bit3_col);
+  ck_assert_int_eq(ROW01, game.bit3_row);
+}
+END_TEST
+
+START_TEST(test_placement_validity_bounds)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  // valid placement, in-bounds and unobstructed
+  ck_assert_int_eq(TRUE, priv_placement_is_valid(&game, PIECE_T, ROT_0, COL4, ROW01));
+
+  // invalid placement, out-of-bounds on the top
+  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_0, COL4, ROW00));
+  // invalid placement, out-of-bounds on the bottom
+  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_2, COL4, ROW19));
+  // invalid placement, out-of-bounds on the left
+  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_2, COL0, ROW01));
+  // invalid placement, out-of-bounds on the right
+  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_2, COL9, ROW19));
+}
+END_TEST
+
+START_TEST(test_placement_validity_obstruction)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  // valid placement, in-bounds and unobstructed
+  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_0, COL4, ROW01));
+}
+END_TEST
+
+
 Suite * tetromino_suite(void)
 {
     Suite *s;
@@ -366,7 +384,8 @@ Suite * tetromino_suite(void)
 
     tcase_add_test(tc_core, test_reset_game);
     tcase_add_test(tc_core, test_place_piece_valid);
-    tcase_add_test(tc_core, test_identity_valid_placement);
+    tcase_add_test(tc_core, test_placement_validity_bounds);
+    tcase_add_test(tc_core, test_placement_validity_obstruction);
     tcase_add_test(tc_core, test_get_placement_piece_t);
     tcase_add_test(tc_core, test_get_placement_piece_i);
     tcase_add_test(tc_core, test_get_placement_piece_o);

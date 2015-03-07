@@ -36,8 +36,25 @@ void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, 
 }
 
 uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
-  //
-  return FALSE;
+  TETROMINO_PLACEMENT placement = priv_get_placement(piece, rot, col, row);
+  unsigned short ctr = 0;
+  uint32_t curr_rows[] = { placement.bit0_row, placement.bit1_row, placement.bit2_row, placement.bit3_row };
+  uint8_t curr_cols[] = { placement.bit0_col, placement.bit1_col, placement.bit2_col, placement.bit3_col };
+  uint32_t curr_row;
+  uint8_t curr_col;
+  for(ctr = 0;ctr < 4;ctr++) {
+    curr_row = curr_rows[ctr];
+    curr_col = curr_cols[ctr];
+    // top/bottom bounds
+    if (curr_row < ROW00 || curr_row > ROW19) {
+      return FALSE;
+    }
+    // left/right bounds
+    if (curr_col < COL0 || curr_col > COL9) {
+      return FALSE;
+    }
+  }
+  return TRUE;
 }
 
 TETROMINO_PLACEMENT priv_get_placement(TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
