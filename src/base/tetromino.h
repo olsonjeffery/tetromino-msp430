@@ -8,6 +8,7 @@
 
 #define TRUE 0
 #define FALSE 1
+#define PLACEMENT_COUNT 4
 
 // bitmasks to index into each location in the field
 // all locations are starting in the upper-left corner and moving right/down
@@ -62,34 +63,21 @@ typedef enum TETROMINO_PIECE {
   PIECE_Z
 } TETROMINO_PIECE;
 
+typedef struct TETROMINO_PLACEMENT {
+  uint32_t row;
+  uint8_t  col;
+} TETROMINO_PLACEMENT;
+
 // the complete game state
 typedef struct TETROMINO_GAME {
   uint32_t field[FIELD_WIDTH];
   uint32_t score;
-  uint32_t bit0_row;
-  uint32_t bit1_row;
-  uint32_t bit2_row;
-  uint32_t bit3_row;
-  uint8_t  bit0_col;
-  uint8_t  bit1_col;
-  uint8_t  bit2_col;
-  uint8_t  bit3_col;
+  TETROMINO_PLACEMENT curr_placement[PLACEMENT_COUNT];
   // BIT0: Game-in-progress status 0 = initial state, game active 1 = game over
   // BIT1 & BIT2: rotation: 00, 01, 10 & 11  
   uint8_t status;
   TETROMINO_PIECE current_piece;
 } TETROMINO_GAME;
-
-typedef struct TETROMINO_PLACEMENT {
-  uint32_t bit0_row;
-  uint32_t bit1_row;
-  uint32_t bit2_row;
-  uint32_t bit3_row;
-  uint8_t  bit0_col;
-  uint8_t  bit1_col;
-  uint8_t  bit2_col;
-  uint8_t  bit3_col;
-} TETROMINO_PLACEMENT;
 
 // public API
 
@@ -123,4 +111,4 @@ uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uin
 // based on its current rotation. does nothing if its an invalid placement
 void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
 
-TETROMINO_PLACEMENT priv_get_placement(TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
+void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);

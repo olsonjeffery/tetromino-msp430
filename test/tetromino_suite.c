@@ -19,309 +19,316 @@ START_TEST(test_reset_game)
 END_TEST
 START_TEST(test_get_placement_piece_t)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_T, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
+  priv_get_placement(placement, PIECE_T, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_T, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_T, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW00 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_T, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_T, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW02 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_T, ROT_3, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_T, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 }
 END_TEST
 
 START_TEST(test_get_placement_piece_i)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_I, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL6, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[4];
+  priv_get_placement(placement, PIECE_I, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL6, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_I, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW03 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_I, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW03 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_I, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL2, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_I, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL2, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_I, ROT_3, COL4, ROW02);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW02 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW03 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_I, ROT_3, COL4, ROW02);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW02 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW03 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 }
 END_TEST
 
 START_TEST(test_get_placement_piece_o)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_O, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[4];
+  priv_get_placement(placement, PIECE_O, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_O, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_O, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_O, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_O, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_O, ROT_3, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_O, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 }
 END_TEST
 
 START_TEST(test_get_placement_piece_j)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_J, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[4];
+  priv_get_placement(placement, PIECE_J, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_J, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_J, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_J, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_J, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_J, ROT_3, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_J, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW02 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW00 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 }
 END_TEST
 
 START_TEST(test_get_placement_piece_l)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_L, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
+  priv_get_placement(placement, PIECE_L, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_L, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_L, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW02 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW00 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_L, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_L, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_L, ROT_3, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_L, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 }
 END_TEST
 
 START_TEST(test_get_placement_piece_s)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_S, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
+  priv_get_placement(placement ,PIECE_S, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW00 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_S, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_S, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_S, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL4, placement.bit1_col);
-  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_S, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL4, placement[1].col);
+  ck_assert_int_ne(ROW02 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_S, ROT_3, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW01 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_S, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW01 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW00 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 }
 END_TEST
 
 START_TEST(test_get_placement_piece_z)
 {
-  TETROMINO_PLACEMENT placement = priv_get_placement(PIECE_Z, ROT_0, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW00 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL5, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
+  priv_get_placement(placement, PIECE_Z, ROT_0, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW00 & placement[2].row, 0);
+  ck_assert_int_eq(COL5, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_Z, ROT_1, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW00 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL5, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW02 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_Z, ROT_1, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW00 & placement[1].row, 0);
+  ck_assert_int_eq(COL5, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW02 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_Z, ROT_2, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL5, placement.bit1_col);
-  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL4, placement.bit2_col);
-  ck_assert_int_ne(ROW02 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL3, placement.bit3_col);
-  ck_assert_int_ne(ROW01 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_Z, ROT_2, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL5, placement[1].col);
+  ck_assert_int_ne(ROW02 & placement[1].row, 0);
+  ck_assert_int_eq(COL4, placement[2].col);
+  ck_assert_int_ne(ROW02 & placement[2].row, 0);
+  ck_assert_int_eq(COL3, placement[3].col);
+  ck_assert_int_ne(ROW01 & placement[3].row, 0);
 
-  placement = priv_get_placement(PIECE_Z, ROT_3, COL4, ROW01);
-  ck_assert_int_eq(COL4, placement.bit0_col);
-  ck_assert_int_ne(ROW01 & placement.bit0_row, 0);
-  ck_assert_int_eq(COL3, placement.bit1_col);
-  ck_assert_int_ne(ROW02 & placement.bit1_row, 0);
-  ck_assert_int_eq(COL3, placement.bit2_col);
-  ck_assert_int_ne(ROW01 & placement.bit2_row, 0);
-  ck_assert_int_eq(COL4, placement.bit3_col);
-  ck_assert_int_ne(ROW00 & placement.bit3_row, 0);
+  priv_get_placement(placement, PIECE_Z, ROT_3, COL4, ROW01);
+  ck_assert_int_eq(COL4, placement[0].col);
+  ck_assert_int_ne(ROW01 & placement[0].row, 0);
+  ck_assert_int_eq(COL3, placement[1].col);
+  ck_assert_int_ne(ROW02 & placement[1].row, 0);
+  ck_assert_int_eq(COL3, placement[2].col);
+  ck_assert_int_ne(ROW01 & placement[2].row, 0);
+  ck_assert_int_eq(COL4, placement[3].col);
+  ck_assert_int_ne(ROW00 & placement[3].row, 0);
 }
 END_TEST
 
@@ -333,14 +340,14 @@ START_TEST(test_place_piece_valid)
   // should result in piece being placed
   ck_assert_int_eq(PIECE_T, game.current_piece);
 
-  ck_assert_int_eq(COL4, game.bit0_col);
-  ck_assert_int_eq(ROW01, game.bit0_row);
-  ck_assert_int_eq(COL4, game.bit1_col);
-  ck_assert_int_eq(ROW00, game.bit1_row);
-  ck_assert_int_eq(COL3, game.bit2_col);
-  ck_assert_int_eq(ROW01, game.bit2_row);
-  ck_assert_int_eq(COL5, game.bit3_col);
-  ck_assert_int_eq(ROW01, game.bit3_row);
+  ck_assert_int_eq(COL4, game.curr_placement[0].col);
+  ck_assert_int_eq(ROW01, game.curr_placement[0].row);
+  ck_assert_int_eq(COL4, game.curr_placement[1].col);
+  ck_assert_int_eq(ROW00, game.curr_placement[1].row);
+  ck_assert_int_eq(COL3, game.curr_placement[2].col);
+  ck_assert_int_eq(ROW01, game.curr_placement[2].row);
+  ck_assert_int_eq(COL5, game.curr_placement[3].col);
+  ck_assert_int_eq(ROW01, game.curr_placement[3].row);
 }
 END_TEST
 
