@@ -12,7 +12,7 @@
 START_TEST(test_reset_game)
 {
   TETROMINO_GAME game;
-  new_game(&game);
+  reset_game(&game);
   // should result in game being reset
   ck_assert_int_eq(PIECE_NONE, game.current_piece);
 }
@@ -335,7 +335,7 @@ END_TEST
 START_TEST(test_place_piece_valid)
 {
   TETROMINO_GAME game;
-  new_game(&game);
+  reset_game(&game);
   priv_place_piece(&game, PIECE_T, ROT_0, 4, 1);
   // should result in piece being placed
   ck_assert_int_eq(PIECE_T, game.current_piece);
@@ -354,7 +354,7 @@ END_TEST
 START_TEST(test_placement_validity_bounds)
 {
   TETROMINO_GAME game;
-  new_game(&game);
+  reset_game(&game);
   // valid placement, in-bounds and unobstructed
   ck_assert_int_eq(TRUE, priv_placement_is_valid(&game, PIECE_T, ROT_0, 4, 1));
 
@@ -372,7 +372,7 @@ END_TEST
 START_TEST(test_placement_validity_obstruction)
 {
   TETROMINO_GAME game;
-  new_game(&game);
+  reset_game(&game);
 
   // valid placement, in-bounds and unobstructed
   ck_assert_int_eq(TRUE, priv_placement_is_valid(&game, PIECE_T, ROT_0, 4, 1));

@@ -52,8 +52,23 @@ typedef struct TETROMINO_GAME {
 
 // public API
 
-// place a new piece on the gameboard, with the "pivot" at the provided location..
 void new_game(TETROMINO_GAME* game);
+void reset_game(TETROMINO_GAME* game);
+
+// indicates whether moving the current piece to the requested location is possible
+uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
+
+// place a new piece on the gameboard, with the "pivot" at the provided location..
+void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
+
+void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
+
+/////////
+// UNIMPLEMENTED
+////////
+
+// return a random TETROMINO_PIECE
+TETROMINO_PIECE priv_get_random_piece();
 
 // try to move a piece left/right
 // returns 0 for success, non-zero for failure
@@ -69,17 +84,3 @@ void do_hard_drop(TETROMINO_GAME* game);
 // let "gravity have its effect", pulling the current tetromino down 1 space
 // returns 0 if the piece is still free-falling, non-zero if the piece has landed
 void do_soft_drop(TETROMINO_GAME* game);
-
-// "internal" API
-
-// return a random TETROMINO_PIECE
-TETROMINO_PIECE priv_get_random_piece();
-
-// indicates whether moving the current piece to the requested location is possible
-uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
-
-// relocate piece "locus" to a given location, applying each unit of the tetromino
-// based on its current rotation. does nothing if its an invalid placement
-void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
-
-void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);

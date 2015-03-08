@@ -14,13 +14,13 @@ void reset_game(TETROMINO_GAME* game) {
     game->cp_rot = 0;
     game->current_piece = PIECE_NONE;
     game->curr_placement[0].col = 0;
-    game->curr_placement[0].row = GET_ROW(0);
+    game->curr_placement[0].row = 0;
     game->curr_placement[1].col = 0;
-    game->curr_placement[1].row = GET_ROW(0);
+    game->curr_placement[1].row = 0;
     game->curr_placement[2].col = 0;
-    game->curr_placement[2].row = GET_ROW(0);
+    game->curr_placement[2].row = 0;
     game->curr_placement[3].col = 0;
-    game->curr_placement[3].row = GET_ROW(0);
+    game->curr_placement[3].row = 0;
   }
 }
 
