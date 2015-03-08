@@ -34,7 +34,7 @@ typedef enum TETROMINO_PIECE {
 } TETROMINO_PIECE;
 
 typedef struct TETROMINO_PLACEMENT {
-  uint32_t row;
+  uint8_t row;
   uint8_t  col;
 } TETROMINO_PLACEMENT;
 

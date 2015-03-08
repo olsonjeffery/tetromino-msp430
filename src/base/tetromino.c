@@ -40,21 +40,22 @@ uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uin
   TETROMINO_PLACEMENT placement[4];
   priv_get_placement(placement, piece, rot, col, row);
   unsigned short ctr = 0;
-  uint32_t curr_row;
+  uint8_t curr_row;
   uint8_t curr_col;
   for(ctr = 0;ctr < 4;ctr++) {
     curr_row = placement[ctr].row;
     curr_col = placement[ctr].col;
     // top/bottom bounds
-    if (curr_row < GET_ROW(0) || curr_row > GET_ROW(19)) {
+    if (curr_row > 19) {
       return FALSE;
     }
     // left/right bounds
-    if (curr_col < 0 || curr_col > 9) {
+    if (curr_col > 9) {
       return FALSE;
     }
     // we look at this placement and examine the current field.. is there anything there?
     if(CHECK_ROW(game->field[curr_col], curr_row)) {
+      return FALSE;
     }
   }
   return TRUE;
@@ -69,7 +70,7 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col - 1;
       placement[2].row = row;
       placement[3].col = col + 1;
@@ -84,9 +85,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[1].col = col + 1;
       placement[1].row = row;
       placement[2].col = col;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else if (rot == ROT_2) {
       // ...
@@ -95,7 +96,7 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col + 1;
       placement[2].row = row;
       placement[3].col = col - 1;
@@ -110,9 +111,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[1].col = col - 1;
       placement[1].row = row;
       placement[2].col = col;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else {
       // failure
@@ -141,11 +142,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col;
-      placement[3].row = row << 2;
+      placement[3].row = row + 2;
     }
     else if (rot == ROT_2) {
       // ....
@@ -169,11 +170,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col;
-      placement[3].row = row >> 2;
+      placement[3].row = row - 2;
     }
     else {
       // failure
@@ -187,9 +188,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
     placement[1].col = col + 1;
     placement[1].row = row;
     placement[2].col = col;
-    placement[2].row = row << 1;
+    placement[2].row = row + 1;
     placement[3].col = col + 1;
-    placement[3].row = row << 1;
+    placement[3].row = row + 1;
   }
   else if (piece == PIECE_J) {
     if (rot == ROT_0) {
@@ -203,7 +204,7 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[2].col = col + 1;
       placement[2].row = row;
       placement[3].col = col + 1;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else if (rot == ROT_1) {
       // .1.
@@ -212,11 +213,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col - 1;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else if (rot == ROT_2) {
       // 3..
@@ -229,7 +230,7 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[2].col = col - 1;
       placement[2].row = row;
       placement[3].col = col - 1;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else if (rot == ROT_3) {
       // .23
@@ -238,11 +239,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col + 1;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else {
       // failure
@@ -260,7 +261,7 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[2].col = col - 1;
       placement[2].row = row;
       placement[3].col = col + 1;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else if (rot == ROT_1) {
       // .2.
@@ -269,11 +270,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col + 1;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else if (rot == ROT_2) {
       // ...
@@ -286,7 +287,7 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[2].col = col + 1;
       placement[2].row = row;
       placement[3].col = col - 1;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else if (rot == ROT_3) {
       // 31.
@@ -295,11 +296,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col - 1;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else {
       // failure
@@ -313,9 +314,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col + 1;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col - 1;
       placement[3].row = row;
     }
@@ -328,9 +329,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[1].col = col + 1;
       placement[1].row = row;
       placement[2].col = col + 1;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else if (rot == ROT_2) {
       // ...
@@ -339,9 +340,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col - 1;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col + 1;
       placement[3].row = row;
     }
@@ -354,9 +355,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[1].col = col - 1;
       placement[1].row = row;
       placement[2].col = col - 1;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else {
       // failure
@@ -370,9 +371,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col - 1;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col;
-      placement[2].row = row >> 1;
+      placement[2].row = row - 1;
       placement[3].col = col + 1;
       placement[3].row = row;
     }
@@ -383,11 +384,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col + 1;
-      placement[1].row = row >> 1;
+      placement[1].row = row - 1;
       placement[2].col = col + 1;
       placement[2].row = row;
       placement[3].col = col;
-      placement[3].row = row << 1;
+      placement[3].row = row + 1;
     }
     else if (rot == ROT_2) {
       // ...
@@ -396,9 +397,9 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col + 1;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col;
-      placement[2].row = row << 1;
+      placement[2].row = row + 1;
       placement[3].col = col - 1;
       placement[3].row = row;
     }
@@ -409,11 +410,11 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
       placement[0].col = col;
       placement[0].row = row;
       placement[1].col = col - 1;
-      placement[1].row = row << 1;
+      placement[1].row = row + 1;
       placement[2].col = col - 1;
       placement[2].row = row;
       placement[3].col = col;
-      placement[3].row = row >> 1;
+      placement[3].row = row - 1;
     }
     else {
       // failure
