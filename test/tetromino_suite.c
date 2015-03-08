@@ -373,8 +373,14 @@ START_TEST(test_placement_validity_obstruction)
 {
   TETROMINO_GAME game;
   new_game(&game);
+
   // valid placement, in-bounds and unobstructed
-  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_0, 4, 1));
+  ck_assert_int_eq(TRUE, priv_placement_is_valid(&game, PIECE_T, ROT_0, 4, 1));
+
+  // put an obstruction at 3,19
+  game.field[3] |= GET_ROW(19);
+  // invalid placement, is obstructed by item above
+  ck_assert_int_eq(FALSE, priv_placement_is_valid(&game, PIECE_T, ROT_0, 4, 19));
 }
 END_TEST
 
