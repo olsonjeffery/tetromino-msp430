@@ -23,14 +23,14 @@
 
 // different types of pieces
 typedef enum TETROMINO_PIECE {
-  PIECE_NONE,
-  PIECE_T,
-  PIECE_O,
-  PIECE_I,
-  PIECE_L,
-  PIECE_J,
-  PIECE_S,
-  PIECE_Z
+  PIECE_NONE = -1,
+  PIECE_T = 0,
+  PIECE_O = 1,
+  PIECE_I = 2,
+  PIECE_L = 3,
+  PIECE_J = 4,
+  PIECE_S = 5,
+  PIECE_Z = 6
 } TETROMINO_PIECE;
 
 typedef struct TETROMINO_PLACEMENT {

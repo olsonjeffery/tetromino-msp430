@@ -29,3 +29,9 @@ The source is laid out like so:
 - A breadboard
 - Some buttons
 - Some jumper wires
+
+### Dependent libraries:
+
+#### `0/msp430-rng`
+
+In `src/platform/rand.{h|c}`, header modified to use flags for the msp430f5229. If you're using a different board you might need to change this. License is included at `rand_LICENSE.txt`.

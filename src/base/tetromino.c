@@ -24,8 +24,13 @@ void reset_game(TETROMINO_GAME* game) {
   }
 }
 
+static uint8_t rand_initialized = FALSE;
 TETROMINO_PIECE priv_get_random_piece() {
-  return PIECE_NONE;
+  if(!rand_initialized) {
+    seed_rng();
+    rand_initialized = TRUE;
+  }
+  return (TETROMINO_PIECE)get_random_number() % 7;
 }
 
 void new_game(TETROMINO_GAME* game) {

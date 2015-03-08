@@ -384,6 +384,15 @@ START_TEST(test_placement_validity_obstruction)
 }
 END_TEST
 
+START_TEST(test_get_random_piece)
+{
+  TETROMINO_PIECE piece = PIECE_NONE;
+  piece = priv_get_random_piece();
+  // as long as it isn't PIECE_NONE let's call it a day
+  ck_assert_int_ne(PIECE_NONE, piece);
+}
+END_TEST
+
 
 Suite * tetromino_suite(void)
 {
@@ -406,6 +415,7 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_get_placement_piece_j);
     tcase_add_test(tc_core, test_get_placement_piece_s);
     tcase_add_test(tc_core, test_get_placement_piece_z);
+    tcase_add_test(tc_core, test_get_random_piece);
     suite_add_tcase(s, tc_core);
 
     return s;
