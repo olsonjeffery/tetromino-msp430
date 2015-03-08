@@ -9,8 +9,8 @@
 #define CHECK_ROW(var, pos) ((var) & (1 << (pos)))
 #define GET_ROW(row) (1 << (row))
 
-#define TRUE 0
-#define FALSE 1
+#define TRUE 1
+#define FALSE 0
 
 #define PLACEMENT_COUNT 4
 #define FIELD_WIDTH 10

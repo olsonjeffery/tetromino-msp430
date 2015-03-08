@@ -34,15 +34,26 @@ void new_game(TETROMINO_GAME* game) {
 
 void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
   //
+  if(priv_placement_is_valid(game, piece, rot, col, row)) {
+    // FIXME : save this redcl of the placement... should be able to capture the initial computation
+    // in priv_placement_is_valid() ?
+    TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
+    priv_get_placement(placement, piece, rot, col, row);
+    game->current_piece = piece;
+    game->curr_placement[0] = placement[0];
+    game->curr_placement[1] = placement[1];
+    game->curr_placement[2] = placement[2];
+    game->curr_placement[3] = placement[3];
+  }
 }
 
 uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
-  TETROMINO_PLACEMENT placement[4];
+  TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
   priv_get_placement(placement, piece, rot, col, row);
   unsigned short ctr = 0;
   uint8_t curr_row;
   uint8_t curr_col;
-  for(ctr = 0;ctr < 4;ctr++) {
+  for(ctr = 0;ctr < PLACEMENT_COUNT;ctr++) {
     curr_row = placement[ctr].row;
     curr_col = placement[ctr].col;
     // top/bottom bounds
