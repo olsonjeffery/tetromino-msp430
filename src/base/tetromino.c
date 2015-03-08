@@ -10,16 +10,17 @@ void reset_game(TETROMINO_GAME* game) {
   for (i=0;i < FIELD_WIDTH;i++) {
     game->field[i] = 0;
     game->score = 0;
-    game->status = 0;
+    game->game_status = 0;
+    game->cp_rot = 0;
     game->current_piece = PIECE_NONE;
-    game->curr_placement[0].col = COL0;
-    game->curr_placement[0].row = ROW00;
-    game->curr_placement[1].col = COL0;
-    game->curr_placement[1].row = ROW00;
-    game->curr_placement[2].col = COL0;
-    game->curr_placement[2].row = ROW00;
-    game->curr_placement[3].col = COL0;
-    game->curr_placement[3].row = ROW00;
+    game->curr_placement[0].col = 0;
+    game->curr_placement[0].row = GET_ROW(0);
+    game->curr_placement[1].col = 0;
+    game->curr_placement[1].row = GET_ROW(0);
+    game->curr_placement[2].col = 0;
+    game->curr_placement[2].row = GET_ROW(0);
+    game->curr_placement[3].col = 0;
+    game->curr_placement[3].row = GET_ROW(0);
   }
 }
 
@@ -45,12 +46,15 @@ uint8_t priv_placement_is_valid(TETROMINO_GAME* game, TETROMINO_PIECE piece, uin
     curr_row = placement[ctr].row;
     curr_col = placement[ctr].col;
     // top/bottom bounds
-    if (curr_row < ROW00 || curr_row > ROW19) {
+    if (curr_row < GET_ROW(0) || curr_row > GET_ROW(19)) {
       return FALSE;
     }
     // left/right bounds
-    if (curr_col < COL0 || curr_col > COL9) {
+    if (curr_col < 0 || curr_col > 9) {
       return FALSE;
+    }
+    // we look at this placement and examine the current field.. is there anything there?
+    if(CHECK_ROW(game->field[curr_col], curr_row)) {
     }
   }
   return TRUE;
