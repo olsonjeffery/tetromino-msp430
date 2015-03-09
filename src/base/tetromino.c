@@ -11,8 +11,8 @@ void reset_game(TETROMINO_GAME* game) {
     game->field[i] = 0;
     game->score = 0;
     game->game_status = 0;
-    game->cp_rot = 0;
-    game->current_piece = PIECE_NONE;
+    game->curr_rot = 0;
+    game->curr_piece = PIECE_NONE;
     game->curr_placement[0].col = 0;
     game->curr_placement[0].row = 0;
     game->curr_placement[1].col = 0;
@@ -33,8 +33,46 @@ TETROMINO_PIECE priv_get_random_piece() {
   return (TETROMINO_PIECE)get_random_number() % 7;
 }
 
+void priv_set_initial_placement_for(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t* rot_ptr) {
+  switch (piece) {
+    case PIECE_T:
+      *rot_ptr = ROT_2;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    case PIECE_I:
+      *rot_ptr = ROT_0;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    case PIECE_O:
+      *rot_ptr = ROT_0;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    case PIECE_L:
+      *rot_ptr = ROT_2;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    case PIECE_J:
+      *rot_ptr = ROT_0;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    case PIECE_S:
+      *rot_ptr = ROT_2;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    case PIECE_Z:
+      *rot_ptr = ROT_2;
+      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+      break;
+    default:
+      // failure
+      break;
+  }
+}
+
 void new_game(TETROMINO_GAME* game) {
   reset_game(game);
+  game->curr_piece = priv_get_random_piece();
+  priv_set_initial_placement_for(game->curr_placement, game->curr_piece, &game->curr_rot);
 }
 
 void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row) {
@@ -44,7 +82,7 @@ void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, 
     // in priv_placement_is_valid() ?
     TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
     priv_get_placement(placement, piece, rot, col, row);
-    game->current_piece = piece;
+    game->curr_piece = piece;
     game->curr_placement[0] = placement[0];
     game->curr_placement[1] = placement[1];
     game->curr_placement[2] = placement[2];

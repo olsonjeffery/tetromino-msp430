@@ -14,7 +14,7 @@ START_TEST(test_reset_game)
   TETROMINO_GAME game;
   reset_game(&game);
   // should result in game being reset
-  ck_assert_int_eq(PIECE_NONE, game.current_piece);
+  ck_assert_int_eq(PIECE_NONE, game.curr_piece);
 }
 END_TEST
 START_TEST(test_get_placement_piece_t)
@@ -338,7 +338,7 @@ START_TEST(test_place_piece_valid)
   reset_game(&game);
   priv_place_piece(&game, PIECE_T, ROT_0, 4, 1);
   // should result in piece being placed
-  ck_assert_int_eq(PIECE_T, game.current_piece);
+  ck_assert_int_eq(PIECE_T, game.curr_piece);
 
   ck_assert_int_eq(4, game.curr_placement[0].col);
   ck_assert_int_eq(1, game.curr_placement[0].row);
@@ -393,6 +393,64 @@ START_TEST(test_get_random_piece)
 }
 END_TEST
 
+START_TEST(test_new_game_places_a_piece) {
+  TETROMINO_GAME game;
+  new_game(&game);
+  ck_assert_int_ne(PIECE_NONE, game.curr_piece);
+  ck_assert_int_eq(4, game.curr_placement[0].col);
+  ck_assert_int_eq(0, game.curr_placement[0].row);
+}
+END_TEST
+
+START_TEST(test_soft_drop_no_landing)
+{
+  TETROMINO_GAME game;
+  ck_assert_int_eq(TRUE, FALSE);
+}
+END_TEST
+
+START_TEST(test_initial_placement)
+{
+  TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
+  uint8_t rot;
+
+  priv_set_initial_placement_for(placement, PIECE_T, &rot);
+  ck_assert_int_eq(ROT_2, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+
+  priv_set_initial_placement_for(placement, PIECE_I, &rot);
+  ck_assert_int_eq(ROT_0, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+
+  priv_set_initial_placement_for(placement, PIECE_O, &rot);
+  ck_assert_int_eq(ROT_0, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+
+  priv_set_initial_placement_for(placement, PIECE_L, &rot);
+  ck_assert_int_eq(ROT_2, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+
+  priv_set_initial_placement_for(placement, PIECE_J, &rot);
+  ck_assert_int_eq(ROT_0, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+
+  priv_set_initial_placement_for(placement, PIECE_S, &rot);
+  ck_assert_int_eq(ROT_2, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+
+  priv_set_initial_placement_for(placement, PIECE_Z, &rot);
+  ck_assert_int_eq(ROT_2, rot);
+  ck_assert_int_eq(4, placement[0].col);
+  ck_assert_int_eq(0, placement[0].row);
+}
+END_TEST
+
 
 Suite * tetromino_suite(void)
 {
@@ -416,6 +474,9 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_get_placement_piece_s);
     tcase_add_test(tc_core, test_get_placement_piece_z);
     tcase_add_test(tc_core, test_get_random_piece);
+    tcase_add_test(tc_core, test_soft_drop_no_landing);
+    tcase_add_test(tc_core, test_new_game_places_a_piece);
+    tcase_add_test(tc_core, test_initial_placement);
     suite_add_tcase(s, tc_core);
 
     return s;

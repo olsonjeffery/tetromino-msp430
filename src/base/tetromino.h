@@ -40,17 +40,20 @@ typedef struct TETROMINO_PLACEMENT {
 
 // the complete game state
 typedef struct TETROMINO_GAME {
+  // status of the game field, apart from the current piece
   uint32_t field[FIELD_WIDTH];
-  uint32_t score;
+  // status of the current piece
   TETROMINO_PLACEMENT curr_placement[PLACEMENT_COUNT];
-  // BIT0: Game-in-progress status 0 = initial state, game active 1 = game over
-  // BIT1 & BIT2: rotation: 00, 01, 10 & 11  
-  uint8_t cp_rot;
+  uint8_t curr_rot;
+  TETROMINO_PIECE curr_piece;
+  // 0 = new game, 1 = game started, 2 = game over
   uint8_t game_status;
-  TETROMINO_PIECE current_piece;
+  // these are the two score metrics
+  // score: get 1 point for every soft/hard drop, 10 points for every line cleared
+  uint32_t score;
+  // lines_cleared: just a counter of lines cleared. could be used to narrow the soft drop ticks over time
+  uint32_t lines_cleared;
 } TETROMINO_GAME;
-
-// public API
 
 void new_game(TETROMINO_GAME* game);
 void reset_game(TETROMINO_GAME* game);
@@ -63,12 +66,15 @@ void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, 
 
 void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t rot, uint8_t col, uint32_t row);
 
-/////////
-// UNIMPLEMENTED
-////////
+// sets the provided placement/rot pointers, based on the piece (each piece has a "default" placement)
+void priv_set_initial_placement_for(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t* rot_ptr);
 
 // return a random TETROMINO_PIECE
 TETROMINO_PIECE priv_get_random_piece();
+
+/////////
+// UNIMPLEMENTED
+////////
 
 // try to move a piece left/right
 // returns 0 for success, non-zero for failure
