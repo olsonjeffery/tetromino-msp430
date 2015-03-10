@@ -87,6 +87,7 @@ void priv_place_piece(TETROMINO_GAME* game, TETROMINO_PIECE piece, uint8_t rot, 
     game->curr_placement[1] = placement[1];
     game->curr_placement[2] = placement[2];
     game->curr_placement[3] = placement[3];
+    game->curr_rot = rot;
   }
 }
 
@@ -476,5 +477,27 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
   }
   else {
     // failure
+  }
+}
+
+void do_soft_drop(TETROMINO_GAME* game) {
+  TETROMINO_PLACEMENT new_placement[PLACEMENT_COUNT];
+  priv_get_placement(new_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row + 1);
+  if(priv_placement_is_valid(game, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row)) {
+    // can move down, commit it
+    uint8_t ctr = 0;
+    for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
+      game->curr_placement[ctr] = new_placement[ctr];
+    }
+  } else {
+    // can't move down, means the piece stays put
+    uint8_t ctr = 0;
+    for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
+      uint32_t row_mask = GET_ROW(game->curr_placement[ctr].row);
+      uint8_t curr_col = game->curr_placement[ctr].col;
+      game->field[curr_col] |= row_mask;
+    }
+    game->curr_piece = priv_get_random_piece();
+    priv_set_initial_placement_for(game->curr_placement, game->curr_piece, &game->curr_rot);
   }
 }

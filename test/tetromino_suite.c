@@ -336,7 +336,8 @@ START_TEST(test_place_piece_valid)
 {
   TETROMINO_GAME game;
   reset_game(&game);
-  priv_place_piece(&game, PIECE_T, ROT_0, 4, 1);
+  uint8_t rot = ROT_0;
+  priv_place_piece(&game, PIECE_T, rot, 4, 1);
   // should result in piece being placed
   ck_assert_int_eq(PIECE_T, game.curr_piece);
 
@@ -348,6 +349,8 @@ START_TEST(test_place_piece_valid)
   ck_assert_int_eq(1, game.curr_placement[2].row);
   ck_assert_int_eq(5, game.curr_placement[3].col);
   ck_assert_int_eq(1, game.curr_placement[3].row);
+  
+  ck_assert_int_eq(rot, game.curr_rot);
 }
 END_TEST
 
@@ -402,13 +405,6 @@ START_TEST(test_new_game_places_a_piece) {
 }
 END_TEST
 
-START_TEST(test_soft_drop_no_landing)
-{
-  TETROMINO_GAME game;
-  ck_assert_int_eq(TRUE, FALSE);
-}
-END_TEST
-
 START_TEST(test_initial_placement)
 {
   TETROMINO_PLACEMENT placement[PLACEMENT_COUNT];
@@ -451,6 +447,59 @@ START_TEST(test_initial_placement)
 }
 END_TEST
 
+START_TEST(test_soft_drop_no_landing)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  TETROMINO_PLACEMENT initial_placement[PLACEMENT_COUNT];
+  priv_get_placement(initial_placement, game.curr_piece, game.curr_rot, game.curr_placement[0].col, game.curr_placement[0].row);
+  do_soft_drop(&game);
+  uint8_t ctr = 0;
+  for(ctr = 0; ctr < PLACEMENT_COUNT;ctr++) {
+    ck_assert_int_eq(initial_placement[ctr].col, game.curr_placement[ctr].col);
+    ck_assert_int_eq(initial_placement[ctr].row + 1, game.curr_placement[ctr].row);
+  }
+}
+END_TEST
+
+START_TEST(test_soft_drop_landing_on_bottom_of_field)
+{
+  // set up game
+  TETROMINO_GAME game;
+  new_game(&game);
+  // reset piece to be at the bottom of the field
+  priv_place_piece(&game, PIECE_T, ROT_0, 4, 19);
+  // set that position aside for later assertion
+  TETROMINO_PLACEMENT initial_placement[PLACEMENT_COUNT];
+  priv_get_placement(initial_placement, game.curr_piece, game.curr_rot, game.curr_placement[0].col, game.curr_placement[0].row);
+  // do the soft drop; should result in converting the piece to be part of the field
+  do_soft_drop(&game);
+  uint8_t ctr = 0;
+  for(ctr = 0; ctr < PLACEMENT_COUNT;ctr++) {
+    uint8_t curr_col = initial_placement[ctr].col;
+    uint8_t curr_row = initial_placement[ctr].row;
+    ck_assert_int_eq(CHECK_ROW(game.field[curr_col], curr_row), TRUE);
+  }
+  
+  // should place a new piece afterwards
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 0);
+}
+END_TEST
+
+START_TEST(test_soft_drop_landing_with_line_clear)
+{
+  TETROMINO_GAME game;
+  ck_assert_int_eq(TRUE, FALSE);
+}
+END_TEST
+
+START_TEST(test_soft_drop_landing_without_line_clear)
+{
+  TETROMINO_GAME game;
+  ck_assert_int_eq(TRUE, FALSE);
+}
+END_TEST
 
 Suite * tetromino_suite(void)
 {
@@ -475,6 +524,9 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_get_placement_piece_z);
     tcase_add_test(tc_core, test_get_random_piece);
     tcase_add_test(tc_core, test_soft_drop_no_landing);
+    tcase_add_test(tc_core, test_soft_drop_landing_without_line_clear);
+    tcase_add_test(tc_core, test_soft_drop_landing_with_line_clear);
+    tcase_add_test(tc_core, test_soft_drop_landing_on_bottom_of_field);
     tcase_add_test(tc_core, test_new_game_places_a_piece);
     tcase_add_test(tc_core, test_initial_placement);
     suite_add_tcase(s, tc_core);

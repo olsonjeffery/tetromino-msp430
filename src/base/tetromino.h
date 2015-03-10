@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include "../api.h"
 
-#define CHECK_ROW(var, pos) ((var) & (1 << (pos)))
+#define CHECK_ROW(var, pos) !!((var) & (1 << (pos)))
 #define GET_ROW(row) (1 << (row))
 
 #define TRUE 1
