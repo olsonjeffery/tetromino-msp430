@@ -83,6 +83,6 @@ debug: all
 
 test: $(TARGET)
 	@echo ==BUILDING TESTS===
-	$(HOST_CC) -o $(BUILD_DIR)/run_$(shell basename `pwd`)_tests $(BASE_SOURCES) $(TEST_SOURCES) $(CFLAGS) -lcheck
+	$(HOST_CC) -o $(BUILD_DIR)/run_$(shell basename `pwd`)_tests $(BASE_SOURCES) $(TEST_SOURCES) $(CFLAGS) -lcheck -O0
 	@echo ===RUNNING TESTS===
 	$(BUILD_DIR)/run_$(shell basename `pwd`)_tests
