@@ -500,15 +500,7 @@ void do_soft_drop(TETROMINO_GAME* game) {
   } else {
     // can't move down, means the piece stays put
     priv_land_placement(game);
-
-    // do line clear check
-    priv_do_line_clearing_check(game);
-
-    // set the next piece
-    game->curr_piece = priv_get_random_piece();
-    priv_set_initial_placement_for(game->curr_placement, game->curr_piece, &game->curr_rot);
   }
-  game->score += 1;
 }
 
 void priv_land_placement(TETROMINO_GAME* game) {
@@ -518,6 +510,14 @@ void priv_land_placement(TETROMINO_GAME* game) {
     uint8_t curr_col = game->curr_placement[ctr].col;
     game->field[curr_col] |= row_mask;
   }
+
+  // do line clear check
+  priv_do_line_clearing_check(game);
+
+  // set the next piece
+  game->curr_piece = priv_get_random_piece();
+  priv_set_initial_placement_for(game->curr_placement, game->curr_piece, &game->curr_rot);
+  game->score += 1;
 }
 
 void priv_do_line_clearing_check(TETROMINO_GAME* game) {
@@ -581,4 +581,23 @@ void priv_do_line_clearing_check(TETROMINO_GAME* game) {
       }
     }
   }
+}
+
+void do_hard_drop(TETROMINO_GAME* game) {
+  TETROMINO_PLACEMENT new_placement[PLACEMENT_COUNT];
+  TETROMINO_PLACEMENT last_valid_placement[PLACEMENT_COUNT];
+  priv_get_placement(new_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row);
+  priv_get_placement(last_valid_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row);
+
+  while(priv_placement_is_valid(game, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row)) {
+    priv_get_placement(last_valid_placement, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row);
+    priv_get_placement(new_placement, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row + 1);
+  }
+  
+  // commit
+  uint8_t ctr = 0;
+  for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
+    game->curr_placement[ctr] = last_valid_placement[ctr];
+  }
+  priv_land_placement(game);
 }

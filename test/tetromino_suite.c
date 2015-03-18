@@ -528,6 +528,40 @@ START_TEST(test_soft_drop_landing_with_line_clear)
 }
 END_TEST
 
+START_TEST(test_hard_drop_landing_with_double_line_clear)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // set every brick on the bottom row except the last
+  uint8_t curr_col = 0;
+  for(curr_col = 0; curr_col < (FIELD_WIDTH - 1); curr_col++) {
+    game.field[curr_col] |= GET_ROW(18);
+    game.field[curr_col] |= GET_ROW(19);
+  }
+
+  // reset piece to be at the bottom/right of the field, clearing the line
+  priv_place_piece(&game, PIECE_I, ROT_3, 9, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+
+  // do the soft drop;
+  do_hard_drop(&game);
+
+  // 10 points for clearing a line
+  // 1 point for processing a drop
+  ck_assert_int_eq(21, game.score);
+  
+  // should result in a line clear
+  ck_assert_int_eq(2, game.lines_cleared);
+  
+  // w/ [8,19], [9,19] and [9,18] set afterwards
+  ck_assert_int_eq(CHECK_ROW(game.field[9], 18), TRUE);
+  ck_assert_int_eq(CHECK_ROW(game.field[9], 19), TRUE);
+}
+END_TEST
+
 Suite * tetromino_suite(void)
 {
     Suite *s;
@@ -553,6 +587,7 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_soft_drop_no_landing);
     tcase_add_test(tc_core, test_soft_drop_landing_with_line_clear);
     tcase_add_test(tc_core, test_soft_drop_landing_on_bottom_of_field);
+    tcase_add_test(tc_core, test_hard_drop_landing_with_double_line_clear);
     tcase_add_test(tc_core, test_new_game_places_a_piece);
     tcase_add_test(tc_core, test_initial_placement);
     suite_add_tcase(s, tc_core);
