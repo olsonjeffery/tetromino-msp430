@@ -503,6 +503,25 @@ void do_soft_drop(TETROMINO_GAME* game) {
   }
 }
 
+void do_hard_drop(TETROMINO_GAME* game) {
+  TETROMINO_PLACEMENT new_placement[PLACEMENT_COUNT];
+  TETROMINO_PLACEMENT last_valid_placement[PLACEMENT_COUNT];
+  priv_get_placement(new_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row);
+  priv_get_placement(last_valid_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row);
+
+  while(priv_placement_is_valid(game, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row)) {
+    priv_get_placement(last_valid_placement, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row);
+    priv_get_placement(new_placement, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row + 1);
+  }
+  
+  // commit
+  uint8_t ctr = 0;
+  for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
+    game->curr_placement[ctr] = last_valid_placement[ctr];
+  }
+  priv_land_placement(game);
+}
+
 void priv_land_placement(TETROMINO_GAME* game) {
   uint8_t ctr = 0;
   for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
@@ -581,23 +600,4 @@ void priv_do_line_clearing_check(TETROMINO_GAME* game) {
       }
     }
   }
-}
-
-void do_hard_drop(TETROMINO_GAME* game) {
-  TETROMINO_PLACEMENT new_placement[PLACEMENT_COUNT];
-  TETROMINO_PLACEMENT last_valid_placement[PLACEMENT_COUNT];
-  priv_get_placement(new_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row);
-  priv_get_placement(last_valid_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row);
-
-  while(priv_placement_is_valid(game, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row)) {
-    priv_get_placement(last_valid_placement, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row);
-    priv_get_placement(new_placement, game->curr_piece, game->curr_rot, new_placement[0].col, new_placement[0].row + 1);
-  }
-  
-  // commit
-  uint8_t ctr = 0;
-  for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
-    game->curr_placement[ctr] = last_valid_placement[ctr];
-  }
-  priv_land_placement(game);
 }

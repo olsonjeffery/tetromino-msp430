@@ -77,6 +77,15 @@ TETROMINO_PIECE priv_get_random_piece();
 // returns 0 if the piece is still free-falling, non-zero if the piece has landed
 void do_soft_drop(TETROMINO_GAME* game);
 
+// do a "hard drop" (make piece fall down until it "lands")
+void do_hard_drop(TETROMINO_GAME* game);
+
+// take the current_placement, in the provided game, and apply it to the field
+void priv_land_placement(TETROMINO_GAME* game);
+
+// process line clearing on the provided game and its current_placement
+void priv_do_line_clearing_check(TETROMINO_GAME* game);
+
 /////////
 // UNIMPLEMENTED
 ////////
@@ -88,12 +97,3 @@ int do_move_right(TETROMINO_GAME* game);
 
 // rotate current piece clockwise
 void do_rotate_clockwise(TETROMINO_GAME* game);
-
-// do a "hard drop" (make piece fall down until it "lands")
-void do_hard_drop(TETROMINO_GAME* game);
-
-// take the current_placement, in the provided game, and apply it to the field
-void priv_land_placement(TETROMINO_GAME* game);
-
-// process line clearing on the provided game and its current_placement
-void priv_do_line_clearing_check(TETROMINO_GAME* game);
