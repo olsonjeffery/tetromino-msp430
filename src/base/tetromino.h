@@ -72,6 +72,10 @@ void priv_set_initial_placement_for(TETROMINO_PLACEMENT* placement, TETROMINO_PI
 // return a random TETROMINO_PIECE
 TETROMINO_PIECE priv_get_random_piece();
 
+// let "gravity have its effect", pulling the current tetromino down 1 space
+// returns 0 if the piece is still free-falling, non-zero if the piece has landed
+void do_soft_drop(TETROMINO_GAME* game);
+
 /////////
 // UNIMPLEMENTED
 ////////
@@ -86,7 +90,3 @@ void do_rotate_clockwise(TETROMINO_GAME* game);
 
 // do a "hard drop" (make piece fall down until it "lands")
 void do_hard_drop(TETROMINO_GAME* game);
-
-// let "gravity have its effect", pulling the current tetromino down 1 space
-// returns 0 if the piece is still free-falling, non-zero if the piece has landed
-void do_soft_drop(TETROMINO_GAME* game);

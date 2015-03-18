@@ -57,12 +57,12 @@ BASE_SOURCES=$(wildcard src/base/**/*.c src/base/*.c src/base/**/*.cpp src/base/
 TEST_SOURCES=$(wildcard test/**/*.c test/*.c test/**/*.cpp test/*.cpp)
 DEPS=$(wildcard src/**/*.h src/*.h src/**/*.hpp src/*.hpp)
 
-all: lint test
+all: lint test $(TARGET)
 
 setup:
 	mkdir -p $(BUILD_DIR)
 
-$(TARGET): setup $(SOURCES) $(DEPS)
+$(TARGET): setup $(SOURCES) $(DEPS) test
 	@echo ==BUILDING $(TARGET)===
 	$(MSP430_CC) -o $@ $(SOURCES) $(CFLAGS) $(MCU_FLAG)
 
@@ -81,7 +81,7 @@ debug: all
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) $(MSPDEBUG) $(MSPDEBUG_DRIVER) "prog $(TARGET)" gdb &
 	$(GDB) $(TARGET) --eval="target remote localhost:2000"
 
-test: $(TARGET)
+test: setup $(SOURCES) $(DEPS)
 	@echo ==BUILDING TESTS===
 	$(HOST_CC) -o $(BUILD_DIR)/run_$(shell basename `pwd`)_tests $(BASE_SOURCES) $(TEST_SOURCES) $(CFLAGS) -lcheck -O0
 	@echo ===RUNNING TESTS===
