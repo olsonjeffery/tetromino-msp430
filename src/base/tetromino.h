@@ -14,8 +14,9 @@
 
 #define PLACEMENT_COUNT 4
 #define FIELD_WIDTH 10
-#define GAME_ACTIVE = 0
-#define GAME_OVER = 1
+#define FIELD_HEIGHT 20
+#define GAME_ACTIVE 0
+#define GAME_OVER 1
 #define ROT_0 0
 #define ROT_1 1
 #define ROT_2 2
@@ -90,3 +91,9 @@ void do_rotate_clockwise(TETROMINO_GAME* game);
 
 // do a "hard drop" (make piece fall down until it "lands")
 void do_hard_drop(TETROMINO_GAME* game);
+
+// take the current_placement, in the provided game, and apply it to the field
+void priv_land_placement(TETROMINO_GAME* game);
+
+// process line clearing on the provided game and its current_placement
+void priv_do_line_clearing_check(TETROMINO_GAME* game);

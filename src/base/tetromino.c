@@ -9,6 +9,7 @@ void reset_game(TETROMINO_GAME* game) {
   uint16_t i = 0;
   for (i=0;i < FIELD_WIDTH;i++) {
     game->field[i] = 0;
+    game->lines_cleared = 0;
     game->score = 0;
     game->game_status = 0;
     game->curr_rot = 0;
@@ -35,37 +36,37 @@ TETROMINO_PIECE priv_get_random_piece() {
 
 void priv_set_initial_placement_for(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, uint8_t* rot_ptr) {
   switch (piece) {
-    case PIECE_T:
-      *rot_ptr = ROT_2;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    case PIECE_I:
-      *rot_ptr = ROT_0;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    case PIECE_O:
-      *rot_ptr = ROT_0;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    case PIECE_L:
-      *rot_ptr = ROT_2;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    case PIECE_J:
-      *rot_ptr = ROT_0;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    case PIECE_S:
-      *rot_ptr = ROT_2;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    case PIECE_Z:
-      *rot_ptr = ROT_2;
-      priv_get_placement(placement, piece, *rot_ptr, 4, 0);
-      break;
-    default:
-      // failure
-      break;
+  case PIECE_T:
+    *rot_ptr = ROT_2;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  case PIECE_I:
+    *rot_ptr = ROT_0;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  case PIECE_O:
+    *rot_ptr = ROT_0;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  case PIECE_L:
+    *rot_ptr = ROT_2;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  case PIECE_J:
+    *rot_ptr = ROT_0;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  case PIECE_S:
+    *rot_ptr = ROT_2;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  case PIECE_Z:
+    *rot_ptr = ROT_2;
+    priv_get_placement(placement, piece, *rot_ptr, 4, 0);
+    break;
+  default:
+    // failure
+    break;
   }
 }
 
@@ -480,6 +481,13 @@ void priv_get_placement(TETROMINO_PLACEMENT* placement, TETROMINO_PIECE piece, u
   }
 }
 
+void priv_copy_placement(TETROMINO_PLACEMENT* from, TETROMINO_PLACEMENT* to) {
+  uint8_t ctr = 0;
+  for(ctr = 0; ctr < PLACEMENT_COUNT; ctr++) {
+    to[ctr] = from[ctr];
+  }
+}
+
 void do_soft_drop(TETROMINO_GAME* game) {
   TETROMINO_PLACEMENT new_placement[PLACEMENT_COUNT];
   priv_get_placement(new_placement, game->curr_piece, game->curr_rot, game->curr_placement[0].col, game->curr_placement[0].row + 1);
@@ -491,13 +499,86 @@ void do_soft_drop(TETROMINO_GAME* game) {
     }
   } else {
     // can't move down, means the piece stays put
-    uint8_t ctr = 0;
-    for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
-      uint32_t row_mask = GET_ROW(game->curr_placement[ctr].row);
-      uint8_t curr_col = game->curr_placement[ctr].col;
-      game->field[curr_col] |= row_mask;
-    }
+    priv_land_placement(game);
+
+    // do line clear check
+    priv_do_line_clearing_check(game);
+
+    // set the next piece
     game->curr_piece = priv_get_random_piece();
     priv_set_initial_placement_for(game->curr_placement, game->curr_piece, &game->curr_rot);
+  }
+  game->score += 1;
+}
+
+void priv_land_placement(TETROMINO_GAME* game) {
+  uint8_t ctr = 0;
+  for(ctr=0;ctr < PLACEMENT_COUNT;ctr++) {
+    uint32_t row_mask = GET_ROW(game->curr_placement[ctr].row);
+    uint8_t curr_col = game->curr_placement[ctr].col;
+    game->field[curr_col] |= row_mask;
+  }
+}
+
+void priv_do_line_clearing_check(TETROMINO_GAME* game) {
+  // this should only be called in the period of time:
+  // - after a placement has "landed" (that is, when its position is OR'd onto the game's field)
+  // - before the piece is replaced by the next, random piece
+  //
+  // this is so that we can use the current_placement as a shorthand to find the rows we need
+  // need to check for clearing, since the "landed" rows are the only ones where a clearing
+  // could occur
+  uint32_t checked_rows = 0;
+  uint32_t cleared_rows = 0;
+  uint8_t brick_ctr = 0;
+  for(brick_ctr = 0; brick_ctr < PLACEMENT_COUNT; brick_ctr++) {
+    uint8_t curr_row = game->curr_placement[brick_ctr].row;
+    if (CHECK_ROW(checked_rows, curr_row) == FALSE) {
+      checked_rows |= GET_ROW(curr_row);
+      uint8_t col_ctr = 0;
+      uint8_t set_bricks = 0;
+      for(col_ctr = 0; col_ctr < FIELD_WIDTH; col_ctr++) {
+        if (CHECK_ROW(game->field[col_ctr], curr_row) == TRUE) {
+          set_bricks += 1;
+        } else {
+          break;
+        }
+      }
+      if (set_bricks == FIELD_WIDTH) {
+        // if we're here, that means there was a whole line of set bricks, so we flip the bit in
+        // cleared_rows
+        cleared_rows |= GET_ROW(curr_row);
+        game->score += 10;
+        game->lines_cleared += 1;
+      }
+    }
+  }
+  // 0 - update the curr_placement's position (it's all moved down..)
+  // 1 - clear the row
+  // 2 - shift down any bricks in rows above (less than) the one that just cleared
+  for(brick_ctr = 0; brick_ctr < PLACEMENT_COUNT; brick_ctr++) {
+    uint8_t curr_row = game->curr_placement[brick_ctr].row;
+    if (CHECK_ROW(cleared_rows, curr_row) == TRUE) {
+      // we have a cleared row!
+      // 1 - clear this row
+      uint8_t cleared_row_col_ctr;
+      uint32_t row_clearing_mask = ~(GET_ROW(curr_row));
+      for(cleared_row_col_ctr = 0; cleared_row_col_ctr < FIELD_WIDTH; cleared_row_col_ctr++) {
+        game->field[cleared_row_col_ctr] &= row_clearing_mask;
+      }
+      // 2 - move backwards towards row 0, shifting down every brick encountered along the way
+      if(curr_row > 0) {
+        uint8_t row_clearing_ctr;
+        for(row_clearing_ctr = curr_row - 1; row_clearing_ctr != 0b11111111; row_clearing_ctr--) {
+          row_clearing_mask = ~(GET_ROW(row_clearing_ctr));
+          for(cleared_row_col_ctr = 0; cleared_row_col_ctr < FIELD_WIDTH; cleared_row_col_ctr++) {
+            if(CHECK_ROW(game->field[cleared_row_col_ctr], row_clearing_ctr) == TRUE) {
+              game->field[cleared_row_col_ctr] |= GET_ROW(row_clearing_ctr + 1);
+            }
+            game->field[cleared_row_col_ctr] &= row_clearing_mask;
+          }
+        }
+      }
+    }
   }
 }

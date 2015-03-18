@@ -15,6 +15,10 @@ START_TEST(test_reset_game)
   reset_game(&game);
   // should result in game being reset
   ck_assert_int_eq(PIECE_NONE, game.curr_piece);
+  // score should be zero
+  ck_assert_int_eq(0, game.score);
+  // lines cleared should be zero
+  ck_assert_int_eq(0, game.lines_cleared);
 }
 END_TEST
 START_TEST(test_get_placement_piece_t)
@@ -484,20 +488,43 @@ START_TEST(test_soft_drop_landing_on_bottom_of_field)
   // should place a new piece afterwards
   ck_assert_int_eq(game.curr_placement[0].col, 4);
   ck_assert_int_eq(game.curr_placement[0].row, 0);
+  
+  // no line clear, but +1 for a drop process
+  ck_assert_int_eq(1, game.score);
 }
 END_TEST
 
 START_TEST(test_soft_drop_landing_with_line_clear)
 {
   TETROMINO_GAME game;
-  ck_assert_int_eq(TRUE, FALSE);
-}
-END_TEST
+  new_game(&game);
 
-START_TEST(test_soft_drop_landing_without_line_clear)
-{
-  TETROMINO_GAME game;
-  ck_assert_int_eq(TRUE, FALSE);
+  // set every brick on the bottom row except the last
+  uint8_t curr_col = 0;
+  for(curr_col = 0; curr_col < (FIELD_WIDTH - 1); curr_col++) {
+    game.field[curr_col] |= GET_ROW(19);
+  }
+
+  // reset piece to be at the bottom/right of the field, clearing the line
+  priv_place_piece(&game, PIECE_T, ROT_3, 9, 18);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].row, 18);
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+
+  // do the soft drop;
+  do_soft_drop(&game);
+
+  // 10 points for clearing a line
+  // 1 point for processing a drop
+  ck_assert_int_eq(11, game.score);
+  
+  // should result in a line clear
+  ck_assert_int_eq(1, game.lines_cleared);
+  
+  // w/ [8,19], [9,19] and [9,18] set afterwards
+  ck_assert_int_eq(CHECK_ROW(game.field[8], 19), TRUE);
+  ck_assert_int_eq(CHECK_ROW(game.field[9], 19), TRUE);
+  ck_assert_int_eq(CHECK_ROW(game.field[9], 18), TRUE);
 }
 END_TEST
 
@@ -524,7 +551,6 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_get_placement_piece_z);
     tcase_add_test(tc_core, test_get_random_piece);
     tcase_add_test(tc_core, test_soft_drop_no_landing);
-    tcase_add_test(tc_core, test_soft_drop_landing_without_line_clear);
     tcase_add_test(tc_core, test_soft_drop_landing_with_line_clear);
     tcase_add_test(tc_core, test_soft_drop_landing_on_bottom_of_field);
     tcase_add_test(tc_core, test_new_game_places_a_piece);
