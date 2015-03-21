@@ -8,6 +8,7 @@
 #include "setup.h"
 
 #include "../src/base/tetromino.h"
+#include "../src/base/tetromino_priv.h"
 
 START_TEST(test_reset_game)
 {

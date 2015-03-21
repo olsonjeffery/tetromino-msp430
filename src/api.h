@@ -4,7 +4,12 @@
 //
 // api.h - API needed in game-agnostic code; impls provided by both platform and test codebases
 
+#ifndef TETROMINO_API_H
+#define TETROMINO_API_H
+
 // api for rng stuff needed within the tetromino module
 void seed_rng();
 int get_random_number();
+
+#endif
 

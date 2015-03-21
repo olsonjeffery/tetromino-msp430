@@ -4,6 +4,7 @@
 //
 // tetromino.c - tetromino game logic/state impl
 #include "tetromino.h"
+#include "tetromino_priv.h"
 
 void reset_game(TETROMINO_GAME* game) {
   uint16_t i = 0;
