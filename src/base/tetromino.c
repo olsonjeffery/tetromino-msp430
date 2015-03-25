@@ -602,3 +602,19 @@ void priv_do_line_clearing_check(TETROMINO_GAME* game) {
     }
   }
 }
+
+uint8_t do_move_left(TETROMINO_GAME* game) {
+  if(priv_placement_is_valid(game, game->curr_piece, game->curr_rot, game->curr_placement[0].col - 1, game->curr_placement[0].row)) {
+    priv_place_piece(game, game->curr_piece, game->curr_rot, game->curr_placement[0].col - 1, game->curr_placement[0].row);
+    return 0;
+  }
+  return 1;
+}
+
+uint8_t do_move_right(TETROMINO_GAME* game) {
+  if(priv_placement_is_valid(game, game->curr_piece, game->curr_rot, game->curr_placement[0].col + 1, game->curr_placement[0].row)) {
+    priv_place_piece(game, game->curr_piece, game->curr_rot, game->curr_placement[0].col + 1, game->curr_placement[0].row);
+    return 0;
+  }
+  return 1;
+}

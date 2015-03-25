@@ -7,8 +7,8 @@
 
 #include "setup.h"
 
-#include "../src/base/tetromino.h"
 #include "../src/base/tetromino_priv.h"
+#include "../src/base/tetromino.h"
 
 START_TEST(test_reset_game)
 {
@@ -563,6 +563,134 @@ START_TEST(test_hard_drop_landing_with_double_line_clear)
 }
 END_TEST
 
+START_TEST(test_move_left_into_unobstructed_space_is_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  // place vertically aligned I piece at 4,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 4, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  
+  // try to move the piece left
+  uint16_t result = do_move_left(&game);
+
+  // verify piece moved
+  ck_assert_int_eq(result, 0);
+  ck_assert_int_eq(game.curr_placement[0].col, 3);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
+START_TEST(test_move_left_outside_of_field_is_not_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // place vertically aligned I piece at 4,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 4, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  
+  // place obstruction at 3,8
+  game.field[3] |= GET_ROW(8);
+  
+  // try to move the piece left
+  uint16_t result = do_move_left(&game);
+
+  // verify piece did not move
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
+START_TEST(test_move_left_into_obstruction_is_not_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // place vertically aligned I piece at 0,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 0, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 0);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  // try to move the piece left
+  uint16_t result = do_move_left(&game);
+
+  // verify piece did not move
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(game.curr_placement[0].col, 0);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
+START_TEST(test_move_right_into_unobstructed_space_is_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  // place vertically aligned I piece at 4,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 4, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  
+  // try to move the piece right
+  uint16_t result = do_move_right(&game);
+
+  // verify piece moved
+  ck_assert_int_eq(result, 0);
+  ck_assert_int_eq(game.curr_placement[0].col, 5);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
+START_TEST(test_move_right_outside_of_field_is_not_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // place vertically aligned I piece at 4,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 4, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  
+  // place obstruction at 3,8
+  game.field[5] |= GET_ROW(8);
+  
+  // try to move the piece right
+  uint16_t result = do_move_right(&game);
+
+  // verify piece did not move
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
+START_TEST(test_move_right_into_obstruction_is_not_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // place vertically aligned I piece at 0,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 9, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  // try to move the piece right
+  uint16_t result = do_move_right(&game);
+
+  // verify piece did not move
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
 Suite * tetromino_suite(void)
 {
     Suite *s;
@@ -590,6 +718,12 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_soft_drop_landing_on_bottom_of_field);
     tcase_add_test(tc_core, test_hard_drop_landing_with_double_line_clear);
     tcase_add_test(tc_core, test_new_game_places_a_piece);
+    tcase_add_test(tc_core, test_move_left_into_unobstructed_space_is_allowed);
+    tcase_add_test(tc_core, test_move_left_outside_of_field_is_not_allowed);
+    tcase_add_test(tc_core, test_move_left_into_obstruction_is_not_allowed);
+    tcase_add_test(tc_core, test_move_right_into_unobstructed_space_is_allowed);
+    tcase_add_test(tc_core, test_move_right_outside_of_field_is_not_allowed);
+    tcase_add_test(tc_core, test_move_right_into_obstruction_is_not_allowed);
     tcase_add_test(tc_core, test_initial_placement);
     suite_add_tcase(s, tc_core);
 
