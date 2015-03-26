@@ -583,7 +583,7 @@ START_TEST(test_move_left_into_unobstructed_space_is_allowed)
 }
 END_TEST
 
-START_TEST(test_move_left_outside_of_field_is_not_allowed)
+START_TEST(test_move_left_into_obstruction_is_not_allowed)
 {
   TETROMINO_GAME game;
   new_game(&game);
@@ -607,7 +607,7 @@ START_TEST(test_move_left_outside_of_field_is_not_allowed)
 }
 END_TEST
 
-START_TEST(test_move_left_into_obstruction_is_not_allowed)
+START_TEST(test_move_left_outside_of_field_is_not_allowed)
 {
   TETROMINO_GAME game;
   new_game(&game);
@@ -647,7 +647,7 @@ START_TEST(test_move_right_into_unobstructed_space_is_allowed)
 }
 END_TEST
 
-START_TEST(test_move_right_outside_of_field_is_not_allowed)
+START_TEST(test_move_right_into_obstruction_is_not_allowed)
 {
   TETROMINO_GAME game;
   new_game(&game);
@@ -671,7 +671,7 @@ START_TEST(test_move_right_outside_of_field_is_not_allowed)
 }
 END_TEST
 
-START_TEST(test_move_right_into_obstruction_is_not_allowed)
+START_TEST(test_move_right_outside_of_field_is_not_allowed)
 {
   TETROMINO_GAME game;
   new_game(&game);
@@ -688,6 +688,93 @@ START_TEST(test_move_right_into_obstruction_is_not_allowed)
   ck_assert_int_eq(result, 1);
   ck_assert_int_eq(game.curr_placement[0].col, 9);
   ck_assert_int_eq(game.curr_placement[0].row, 10);
+}
+END_TEST
+
+START_TEST(test_rotate_CW_into_unobstructed_space_is_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+  // place vertically aligned I piece at 4,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 4, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  ck_assert_int_eq(game.curr_placement[1].col, 4);
+  ck_assert_int_eq(game.curr_placement[1].row, 11);
+  
+  // try to rotate
+  uint16_t result = do_rotate_clockwise(&game);
+
+  // verify piece rotated
+  ck_assert_int_eq(result, 0);
+  ck_assert_int_eq(game.curr_rot, ROT_0);
+  ck_assert_int_eq(game.curr_placement[1].col, 3);
+  ck_assert_int_eq(game.curr_placement[1].row, 10);
+
+  // try to rotate (again!)
+  result = do_rotate_clockwise(&game);
+
+  // verify piece rotated
+  ck_assert_int_eq(result, 0);
+  ck_assert_int_eq(game.curr_rot, ROT_1);
+  ck_assert_int_eq(game.curr_placement[1].col, 4);
+  ck_assert_int_eq(game.curr_placement[1].row, 9);
+}
+END_TEST
+
+START_TEST(test_rotate_CW_into_obstruction_is_not_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // place vertically aligned I piece at 4,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 4, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  ck_assert_int_eq(game.curr_placement[1].col, 4);
+  ck_assert_int_eq(game.curr_placement[1].row, 11);
+  
+  // place obstruction at 3,10
+  game.field[3] |= GET_ROW(10);
+  
+  // try to rotate
+  uint16_t result = do_rotate_clockwise(&game);
+
+  // verify piece did not move
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(game.curr_rot, ROT_3);
+  ck_assert_int_eq(game.curr_placement[0].col, 4);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  ck_assert_int_eq(game.curr_placement[1].col, 4);
+  ck_assert_int_eq(game.curr_placement[1].row, 11);
+}
+END_TEST
+
+START_TEST(test_rotate_CW_outside_of_field_is_not_allowed)
+{
+  TETROMINO_GAME game;
+  new_game(&game);
+
+  // place vertically aligned I piece at 0,10
+  priv_place_piece(&game, PIECE_I, ROT_3, 9, 10);
+  // verify placement is valid
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 11);
+
+  // try to rotate
+  uint16_t result = do_rotate_clockwise(&game);
+
+  // verify piece did not move
+  ck_assert_int_eq(result, 1);
+  ck_assert_int_eq(game.curr_rot, ROT_3);
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 10);
+  ck_assert_int_eq(game.curr_placement[0].col, 9);
+  ck_assert_int_eq(game.curr_placement[0].row, 11);
 }
 END_TEST
 
@@ -724,6 +811,9 @@ Suite * tetromino_suite(void)
     tcase_add_test(tc_core, test_move_right_into_unobstructed_space_is_allowed);
     tcase_add_test(tc_core, test_move_right_outside_of_field_is_not_allowed);
     tcase_add_test(tc_core, test_move_right_into_obstruction_is_not_allowed);
+    tcase_add_test(tc_core, test_rotate_CW_into_unobstructed_space_is_allowed);
+    tcase_add_test(tc_core, test_rotate_CW_outside_of_field_is_not_allowed);
+    tcase_add_test(tc_core, test_rotate_CW_into_obstruction_is_not_allowed);
     tcase_add_test(tc_core, test_initial_placement);
     suite_add_tcase(s, tc_core);
 

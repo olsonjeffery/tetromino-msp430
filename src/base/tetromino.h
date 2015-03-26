@@ -69,10 +69,6 @@ void do_soft_drop(TETROMINO_GAME* game);
 // do a "hard drop" (make piece fall down until it "lands")
 void do_hard_drop(TETROMINO_GAME* game);
 
-/////////
-// UNIMPLEMENTED
-////////
-
 // try to move a piece left/right
 // returns 0 for success, non-zero for failure
 uint8_t do_move_left(TETROMINO_GAME* game);
@@ -80,5 +76,4 @@ uint8_t do_move_right(TETROMINO_GAME* game);
 
 // rotate current piece clockwise
 uint8_t do_rotate_clockwise(TETROMINO_GAME* game);
-
 #endif

@@ -618,3 +618,7 @@ uint8_t do_move_right(TETROMINO_GAME* game) {
   }
   return 1;
 }
+
+uint8_t do_rotate_clockwise(TETROMINO_GAME* game) {
+  return 0;
+}
